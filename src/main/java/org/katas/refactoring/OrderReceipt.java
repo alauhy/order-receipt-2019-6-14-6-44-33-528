@@ -13,6 +13,10 @@ public class OrderReceipt {
     private Order order;
 
     final String title = "======Printing Orders======\n";
+    final String sales_tax = "Sales Tax";
+    final String total_amount = "Total Amount";
+    final double tax = .10;
+    final double taxedRate = 1.10;
     public OrderReceipt(Order order) {
         this.order = order;
     }
@@ -24,32 +28,29 @@ public class OrderReceipt {
     public String createReceipt(){
         StringBuilder receipet = new StringBuilder();
 
-        // print headers
 
         receipet.append(title);
 
-        // print date, bill no, customer name
-//        receipet.append("Date - " + order.getDate();
+
         receipet.append(order.getCustomerName());
         receipet.append(order.getCustomerAddress());
-//        receipet.append(order.getCustomerLoyaltyNumber());
 
-        // prints lineItems
+
 
         receipet.append(getLineItems());
 
 
-        // prints the state tax
-        receipet.append("Sales Tax").append('\t').append(getTotalSalesTx());
 
-        // print total amount
-        receipet.append("Total Amount").append('\t').append(getTotalAmount());
+        receipet.append(sales_tax).append('\t').append(getTotalSalesTx());
+
+
+        receipet.append(total_amount).append('\t').append(getTotalAmount());
 
         return receipet.toString();
     }
 
     public String getLineItems() {
-        // prints the state tax
+
         String lineItems = "";
         for (LineItem lineItem : order.getLineItems()) {
             lineItems += lineItem.getDescription();
@@ -71,12 +72,15 @@ public class OrderReceipt {
 
     public double getTotalSalesTx() {
 
-        return lineItemTotalAmount().stream().reduce(0.0,(a, b) -> a + b * .10);
+        return lineItemTotalAmount().stream().reduce(0.0, (a, b) -> {
+
+            return a + b * tax;
+        });
 
     }
 
     public double getTotalAmount() {
-        return lineItemTotalAmount().stream().reduce(0.0,(a, b) -> a + b * 1.10);
+        return lineItemTotalAmount().stream().reduce(0.0,(a, b) -> a + b * taxedRate);
 
     }
 
