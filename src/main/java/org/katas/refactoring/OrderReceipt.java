@@ -41,10 +41,10 @@ public class OrderReceipt {
 
 
 
-        receipet.append(sales_tax).append('\t').append(getTotalSalesTx());
+        receipet.append(sales_tax).append('\t').append(getTotalSalesTax());
 
 
-        receipet.append(total_amount).append('\t').append(getTotalAmount());
+        receipet.append(total_amount).append('\t').append(getTotalPrice());
 
         return receipet.toString();
     }
@@ -70,7 +70,7 @@ public class OrderReceipt {
         return order.getLineItems().stream().map(e -> e.totalAmount()).collect(Collectors.toList());
     }
 
-    public double getTotalSalesTx() {
+    public double getTotalSalesTax() {
 
         return lineItemTotalAmount().stream().reduce(0.0, (a, b) -> {
 
@@ -79,7 +79,7 @@ public class OrderReceipt {
 
     }
 
-    public double getTotalAmount() {
+    public double getTotalPrice() {
         return lineItemTotalAmount().stream().reduce(0.0,(a, b) -> a + b * taxedRate);
 
     }
